@@ -10,12 +10,14 @@ import Footer from "./Footer";
 import VehicleRegistrationForm from "../pages/VehicleRegistrationForm";
 import UserDashboard from "../pages/UserDashboard";
 import VehicleDetails from "./VehicleDetails";
+import AdminDashboard from "../pages/AdminDashboard";
+import YourBookedVehicles from "../pages/YourBookedVehicles";
 
 function App() {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [vehicle, setVehicles] = useState([]);
- 
+  const [bookedVehicles, setBookedVehicles] = useState([]);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode); // Simply toggle the dark mode state
@@ -29,19 +31,32 @@ function App() {
     });
   }, []);
 
+  const onAddToBookedVehicles = (vehicle) => {
+    if (!bookedVehicles.some((v) => v.id === vehicle.id)) {
+      setBookedVehicles([...bookedVehicles, vehicle]);
+    } else {
+      console.log("Vehicle is already booked.");
+    }
+  };
 
   return (
-    <div className={darkMode ? "dark" : ""}>
+    <div className={darkMode ? "dark" : "flex-col"}>
       <NavBar
         user={user}
         setUser={setUser}
         toggleDarkMode={toggleDarkMode}
         darkMode={darkMode}
       />
-      <main className="dark:bg-gray-900">
+      <main className="dark:bg-gray-900 flex-grow-1">
         <Routes>
           {user ? (
             <>
+              {user.username === 'admin' && (
+                <Route
+                  path="/admindashboard"
+                  element={<AdminDashboard user={user} />}
+                />
+              )}
               {user.is_driver && (
                 <>
                   <Route
@@ -56,9 +71,22 @@ function App() {
                   <Route path="/rides" element={<Rides />} />
                 </>
               )}
-              <Route path="/userdashboard" element={<UserDashboard user={user} />} />
-              <Route path="/userdashboard/vehicles/:id" element={<VehicleDetails vehicle={vehicle} />} />
-
+              <Route
+                path="/userdashboard"
+                element={<UserDashboard user={user} />}
+              />
+              <Route
+                path="/userdashboard/vehicles/:id"
+                element={
+                  <VehicleDetails
+                    onAddToBookedVehicles={onAddToBookedVehicles}
+                  />
+                }
+              />
+              <Route
+                path="/vehicles/your-vehicles"
+                element={<YourBookedVehicles booked={bookedVehicles} />}
+              />
             </>
           ) : (
             <>
@@ -68,7 +96,7 @@ function App() {
               />
               <Route path="/login" element={<Login setUser={setUser} />} />
               <Route
-                path="/"
+                path="*"
                 element={
                   <HomePageNotLoggedIn
                     toggleDarkMode={toggleDarkMode}
