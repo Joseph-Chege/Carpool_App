@@ -438,8 +438,6 @@ class VehicleResourceById(Resource):
         db.session.commit()
         return '', 204
 
-
-
 # Review Resources
 class ReviewResource(Resource):
     def get(self, review_id=None):

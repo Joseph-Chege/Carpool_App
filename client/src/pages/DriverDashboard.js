@@ -43,12 +43,12 @@ function DriverDashboard({ user }) {
           </li>
           <li>
             <Link to="/rides" className="block py-2 hover:bg-gray-700">
-              My Rides
+              My Bookings
             </Link>
           </li>
           <li>
             <Link to="/bookings" className="block py-2 hover:bg-gray-700">
-              My Bookings
+              Reviews
             </Link>
           </li>
         </ul>
@@ -57,8 +57,7 @@ function DriverDashboard({ user }) {
         <h1 className="text-2xl font-bold mb-4">Registered Vehicles</h1>
         {error && <p className="text-red-500">{error}</p>}{" "}
         {/* Display error message */}
-        {vehicles.length === 0 && !error}{" "}
-        {/* Loading state */}
+        {vehicles.length === 0 && !error} {/* Loading state */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {vehicles.length > 0
             ? vehicles.map((vehicle) => (
