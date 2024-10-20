@@ -51,7 +51,7 @@ function App() {
         <Routes>
           {user ? (
             <>
-              {user.username === 'admin' && (
+              {user.username === "admin" && (
                 <Route
                   path="/admindashboard"
                   element={<AdminDashboard user={user} />}
@@ -62,7 +62,7 @@ function App() {
                   <Route
                     exact
                     path="/driverdashboard"
-                    element={<DriverDashboard />}
+                    element={<DriverDashboard user={user} />}
                   />
                   <Route
                     path="/vehicle-registration"

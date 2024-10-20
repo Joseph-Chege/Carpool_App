@@ -437,6 +437,19 @@ class VehicleResourceById(Resource):
         db.session.delete(vehicle)
         db.session.commit()
         return '', 204
+## To allo the search of vehicles by the user / driver  
+class VehicleResourceByUser(Resource):
+    def get(self):
+        user_id = request.args.get('user_id')  # Get user_id from query parameters
+        if not user_id:
+            return jsonify({"error": "User ID is required"}), 400
+
+        vehicles = Vehicle.query.filter_by(user_id=user_id).all()  # Filter by user_id
+        if not vehicles:
+            return jsonify({"message": "No vehicles found for this user"}), 404
+
+        return jsonify([vehicle.to_dict() for vehicle in vehicles])  # Return a list of vehicles
+
 
 # Review Resources
 class ReviewResource(Resource):
@@ -559,6 +572,7 @@ api.add_resource(PaymentResourceById, '/payments/<int:payment_id>', endpoint='/p
 
 api.add_resource(VehicleResource, '/vehicles', endpoint='/vehicles')
 api.add_resource(VehicleResourceById, '/vehicles/<int:vehicle_id>', endpoint='/vehicles/<int:vehicle_id>')
+api.add_resource(VehicleResourceByUser, '/vehicles')
 
 api.add_resource(ReviewResource, '/reviews', endpoint='/reviews')
 api.add_resource(ReviewResourceById, '/reviews/<int:review_id>', endpoint='/reviews/<int:review_id>')

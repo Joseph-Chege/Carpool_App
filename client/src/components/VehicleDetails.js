@@ -47,7 +47,7 @@ function VehicleDetails({ onAddToBookedVehicles }) {
                 });
               }
             });
-  
+
             // Fetch pending rides for the driver
             fetch(`/rides?driver_id=${vehicleData.user.id}&ride_status=pending`) // Updated fetch
               .then((res) => {
@@ -57,18 +57,20 @@ function VehicleDetails({ onAddToBookedVehicles }) {
                     setPendingRides(rideData); // Set pending rides for the driver
                   });
                 } else {
-                  console.error('Failed to fetch pending rides:', res.statusText);
+                  console.error(
+                    "Failed to fetch pending rides:",
+                    res.statusText
+                  );
                 }
               })
               .catch((error) => {
-                console.error('Error fetching pending rides:', error);
+                console.error("Error fetching pending rides:", error);
               });
           }
         });
       }
     });
   }, [id]);
-  
 
   if (!vehicle) {
     return <div>Loading vehicle details...</div>;
@@ -178,7 +180,7 @@ function VehicleDetails({ onAddToBookedVehicles }) {
                     <p>
                       <strong>Estimated Cost:</strong> ${ride.estimated_cost}
                     </p>
-                    
+
                     <button className="w-1/4 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4">
                       Book Now
                     </button>
