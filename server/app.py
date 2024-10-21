@@ -52,7 +52,7 @@ class Signup(Resource):
             return user.to_dict(), 201
         except IntegrityError:
             db.session.rollback()
-            return jsonify({"error": "Username or email already exists"}), 400
+            return jsonify({"error": "Username or email already exists."}), 400
         
 # Login Resource
 class Login(Resource):
