@@ -86,7 +86,7 @@ function HomePageNotLoggedIn() {
         </div>
       </div>
 
-      {/* Inline CSS for animations */}
+      {/* Inline CSS for animations
       <style jsx>{`
         .moving-car {
           width: 120px;
@@ -101,7 +101,7 @@ function HomePageNotLoggedIn() {
             transform: translateX(100%);
           }
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 }
