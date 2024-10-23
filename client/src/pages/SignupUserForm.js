@@ -9,7 +9,7 @@ function SignupUserForm({ setUser }) {
   const [isDriver, setIsDriver] = useState(false); // State to check if user is a driver or not
   const [isDriverSelected, setIsDriverSelected] = useState(false); // State to check if user is a driver or not
   const [error, setError] = useState(""); // State for error messages
-  const [image, setImage] = useState(""); 
+  const [image, setImage] = useState("");
 
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function SignupUserForm({ setUser }) {
         email,
         password,
         is_driver: isDriver,
-        image // Add profile picture field if desired
+        image, // Add profile picture field if desired
       }),
     })
       .then((response) => {
@@ -165,7 +165,7 @@ function SignupUserForm({ setUser }) {
           >
             Sign Up
           </button>
-         
+
           <p className="mt-4 text-center dark:text-white">
             Already have an account? &nbsp;
             <Link to="/login">
