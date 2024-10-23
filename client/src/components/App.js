@@ -6,6 +6,7 @@ import Rides from "./Rides";
 import SignupUserForm from "../pages/SignupUserForm";
 import Login from "../pages/Login";
 import HomePageNotLoggedIn from "../pages/HomePageNotLoggedIn";
+import ProfilePage from "../pages/ProfilePage";
 import Footer from "./Footer";
 import VehicleRegistrationForm from "../pages/VehicleRegistrationForm";
 import UserDashboard from "../pages/UserDashboard";
@@ -44,7 +45,6 @@ function App() {
   const handleNewReview = (newReview) => {
     setReviews((prevReviews) => [newReview, ...prevReviews]);
   };
-
 
   return (
     <div className={darkMode ? "dark" : "flex-col"}>
@@ -97,8 +97,16 @@ function App() {
               />
               <Route
                 path="/rides/:id/reviews"
-                element={<AddReviewForm user={user} reviews={reviews} onNewReview={handleNewReview} />}
+                element={
+                  <AddReviewForm
+                    user={user}
+                    reviews={reviews}
+                    onNewReview={handleNewReview}
+                  />
+                }
               />
+              {/* Profile Page Route - Display user profile */}
+              <Route path="/profile" element={<ProfilePage user={user} />} />
             </>
           ) : (
             <>
