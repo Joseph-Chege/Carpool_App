@@ -43,7 +43,7 @@ function VehicleRegistrationForm() {
         plate_number: plateNumber,
         seating_capacity: seatingCapacity,
         sacco,
-        image 
+        image,
       }),
     })
       .then((response) => {

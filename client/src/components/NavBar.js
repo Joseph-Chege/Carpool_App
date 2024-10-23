@@ -43,7 +43,7 @@ function NavBar({ user, setUser, toggleDarkMode, darkMode }) {
         {user &&
           user.is_driver && ( // Simplified conditional rendering
             <span
-              className="text-2xl text-black hover:text-light-pink cursor-pointer"
+              className="text-2xl text-black hover:text-light-pink cursor-pointer dark:text-white"
               onClick={toggleDropdown}
             >
               <FontAwesomeIcon icon={faBars} />

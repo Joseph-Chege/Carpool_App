@@ -11,13 +11,15 @@ import VehicleRegistrationForm from "../pages/VehicleRegistrationForm";
 import UserDashboard from "../pages/UserDashboard";
 import VehicleDetails from "./VehicleDetails";
 import AdminDashboard from "../pages/AdminDashboard";
-import YourBookedVehicles from "../pages/YourBookedVehicles";
+import YourBookedRides from "../pages/YourBookedRides";
+import AddReviewForm from "../pages/AddReviewForm";
 
 function App() {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [vehicle, setVehicles] = useState([]);
   const [bookedVehicles, setBookedVehicles] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode); // Simply toggle the dark mode state
@@ -39,6 +41,11 @@ function App() {
     }
   };
 
+  const handleNewReview = (newReview) => {
+    setReviews((prevReviews) => [newReview, ...prevReviews]);
+  };
+
+
   return (
     <div className={darkMode ? "dark" : "flex-col"}>
       <NavBar
@@ -51,7 +58,7 @@ function App() {
         <Routes>
           {user ? (
             <>
-              {user.username === 'admin' && (
+              {user.username === "admin" && (
                 <Route
                   path="/admindashboard"
                   element={<AdminDashboard user={user} />}
@@ -62,7 +69,7 @@ function App() {
                   <Route
                     exact
                     path="/driverdashboard"
-                    element={<DriverDashboard />}
+                    element={<DriverDashboard user={user} />}
                   />
                   <Route
                     path="/vehicle-registration"
@@ -79,13 +86,18 @@ function App() {
                 path="/userdashboard/vehicles/:id"
                 element={
                   <VehicleDetails
+                    user={user}
                     onAddToBookedVehicles={onAddToBookedVehicles}
                   />
                 }
               />
               <Route
-                path="/vehicles/your-vehicles"
-                element={<YourBookedVehicles booked={bookedVehicles} />}
+                path="/rides/your-rides"
+                element={<YourBookedRides booked={bookedVehicles} />}
+              />
+              <Route
+                path="/rides/:id/reviews"
+                element={<AddReviewForm user={user} reviews={reviews} onNewReview={handleNewReview} />}
               />
             </>
           ) : (

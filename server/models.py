@@ -100,7 +100,7 @@ class Booking(db.Model, SerializerMixin):
 class Ride(db.Model, SerializerMixin):
     __tablename__ = 'rides'
 
-    serialize_rules= ('-user', '-ride', '-reviews')
+    serialize_rules= ('-user', '-ride')
 
     id = db.Column(db.Integer, primary_key=True)
     pickup_location = db.Column(db.String(255))
@@ -214,10 +214,10 @@ class Admin(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'Reviews'
 
-    serialize_rules= ('-user', '-booking', '-ride', '-review')
+    serialize_rules= ('-booking', '-ride',)
 
     id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Integer)
     comment = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=func.now())
 
@@ -228,12 +228,6 @@ class Review(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='reviews')
     booking = db.relationship('Booking', back_populates='reviews')
     ride = db.relationship('Ride', back_populates='reviews')
-
-    @validates('rating')
-    def validate_rating(self, key, rating):
-        if rating < 1 or rating > 5:
-            raise ValueError("Rating must be between 1 and 5.")
-        return rating
     
     def __repr__(self):
         return f'<Review {self.id}, {self.user_id}, {self.booking_id}, {self.ride_id}>'

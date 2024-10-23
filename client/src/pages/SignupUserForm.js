@@ -60,9 +60,9 @@ function SignupUserForm({ setUser }) {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-8 lg:px-16 dark:bg-gray-800">
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-xs sm:max-w-sm lg:max-w-md">
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-xs sm:max-w-sm lg:max-w-md dark:bg-gray-700">
         <form onSubmit={handleSubmit}>
-          <h1 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-6 dark:text-white">
             Sign Up
           </h1>
 
@@ -71,7 +71,7 @@ function SignupUserForm({ setUser }) {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
             >
               Username
             </label>
@@ -81,14 +81,14 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
             >
               Email
             </label>
@@ -98,14 +98,14 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
             >
               Password
             </label>
@@ -115,14 +115,14 @@ function SignupUserForm({ setUser }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="password_confirmation"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
             >
               Password Confirmation
             </label>
@@ -132,14 +132,14 @@ function SignupUserForm({ setUser }) {
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
             />
           </div>
 
           <div className="flex items-center justify-between mb-4">
             <label
               htmlFor="isDriver"
-              className="block text-gray-700 font-semibold mb-2 mr-14"
+              className="block text-gray-700 font-semibold mb-2 mr-14 dark:text-white"
             >
               Sign up as a driver?
             </label>
@@ -151,7 +151,7 @@ function SignupUserForm({ setUser }) {
                   setIsDriver(e.target.value === "true");
                   // setIsDriverSelected(true); // This will hide the dropdown after selection
                 }}
-                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
               >
                 <option value="false">No</option>
                 <option value="true">Yes</option>
@@ -166,7 +166,7 @@ function SignupUserForm({ setUser }) {
             Sign Up
           </button>
          
-          <p className="mt-4 text-center">
+          <p className="mt-4 text-center dark:text-white">
             Already have an account? &nbsp;
             <Link to="/login">
               <button

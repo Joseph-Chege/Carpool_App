@@ -52,7 +52,7 @@ class Signup(Resource):
             return user.to_dict(), 201
         except IntegrityError:
             db.session.rollback()
-            return jsonify({"error": "Username or email already exists"}), 400
+            return jsonify({"error": "Username or email already exists."}), 400
         
 # Login Resource
 class Login(Resource):
@@ -246,7 +246,7 @@ class BookingResource(Resource):
         )
         db.session.add(booking)
         db.session.commit()
-        return jsonify(booking.to_dict()), 201
+        return make_response(jsonify(booking.to_dict()), 201)
 
 
 class BookingResourceById(Resource):
@@ -261,7 +261,7 @@ class BookingResourceById(Resource):
         booking.booking_status = data.get('booking_status', booking.booking_status)
         booking.payment_status = data.get('payment_status', booking.payment_status)
         db.session.commit()
-        return jsonify(booking.to_dict())
+        return make_response(jsonify(booking.to_dict()))
 
     def delete(self, booking_id):
         booking = Booking.query.get_or_404(booking_id)
@@ -437,7 +437,18 @@ class VehicleResourceById(Resource):
         db.session.delete(vehicle)
         db.session.commit()
         return '', 204
+## To allo the search of vehicles by the user / driver  
+class VehicleResourceByUser(Resource):
+    def get(self):
+        user_id = request.args.get('user_id')  # Get user_id from query parameters
+        if not user_id:
+            return jsonify({"error": "User ID is required"}), 400
 
+        vehicles = Vehicle.query.filter_by(user_id=user_id).all()  # Filter by user_id
+        if not vehicles:
+            return jsonify({"message": "No vehicles found for this user"}), 404
+
+        return jsonify([vehicle.to_dict() for vehicle in vehicles])  # Return a list of vehicles
 
 
 # Review Resources
@@ -445,35 +456,46 @@ class ReviewResource(Resource):
     def get(self, review_id=None):
         if review_id:
             review = Review.query.get_or_404(review_id)
-            return jsonify(review.to_dict())
+            return make_response(jsonify(review.to_dict()))
         else:
             reviews = Review.query.all()
-            return jsonify([review.to_dict() for review in reviews])
+            return make_response(jsonify([review.to_dict() for review in reviews]))
         
-    def get_reviews_by_user(self, user_id):
-        # Fetch reviews associated with the user
-        reviews = Review.query.filter_by(user_id=user_id).all()
-        return jsonify([review.to_dict() for review in reviews])
-
-
     def post(self):
         data = request.get_json()
+
+        # Validate required fields
+        if 'user_id' not in data or 'ride_id' not in data or 'rating' not in data:
+            return make_response(jsonify({"error": "Missing required fields: user_id, ride_id, or rating"}), 400)
+
+        # Validate rating range
+        if not (1 <= data.get('rating') <= 5):
+            return make_response(jsonify({"error": "Rating must be between 1 and 5"}), 400)
+
+        # Create the new review
         review = Review(
-            rating=data['rating'],
             comment=data.get('comment'),
             user_id=data['user_id'],
-            booking_id=data['booking_id'],
-            ride_id=data['ride_id']
+            ride_id=data['ride_id'],
+            booking_id=data.get('booking_id'),  # Include if provided
+            rating=data['rating']
         )
         db.session.add(review)
         db.session.commit()
-        return jsonify(review.to_dict()), 201
 
+        return make_response(jsonify(review.to_dict()), 201)
+
+@app.route('/rides/<int:ride_id>/reviews', methods=['GET'])
+def get_reviews_for_ride(ride_id):
+    # Fetch reviews related to the ride where the driver is part of
+    reviews = Review.query.filter_by(ride_id=ride_id).all()
+
+    return jsonify([review.to_dict() for review in reviews])
 
 class ReviewResourceById(Resource):
     def get(self, review_id):
         review = Review.query.get_or_404(review_id)
-        return jsonify(review.to_dict())
+        return make_response(jsonify(review.to_dict()))
     
     def patch(self, review_id):
         review = Review.query.get_or_404(review_id)
@@ -481,7 +503,7 @@ class ReviewResourceById(Resource):
         review.rating = data.get('rating', review.rating)
         review.comment = data.get('comment', review.comment)
         db.session.commit()
-        return jsonify(review.to_dict())
+        return make_response(jsonify(review.to_dict()))
 
     def delete(self, review_id):
         review = Review.query.get_or_404(review_id)
@@ -561,6 +583,7 @@ api.add_resource(PaymentResourceById, '/payments/<int:payment_id>', endpoint='/p
 
 api.add_resource(VehicleResource, '/vehicles', endpoint='/vehicles')
 api.add_resource(VehicleResourceById, '/vehicles/<int:vehicle_id>', endpoint='/vehicles/<int:vehicle_id>')
+api.add_resource(VehicleResourceByUser, '/vehicles')
 
 api.add_resource(ReviewResource, '/reviews', endpoint='/reviews')
 api.add_resource(ReviewResourceById, '/reviews/<int:review_id>', endpoint='/reviews/<int:review_id>')
