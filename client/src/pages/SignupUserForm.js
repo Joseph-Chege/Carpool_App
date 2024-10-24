@@ -5,6 +5,7 @@ function SignupUserForm({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isDriver, setIsDriver] = useState(false); // State to check if user is a driver or not
   const [isDriverSelected, setIsDriverSelected] = useState(false); // State to check if user is a driver or not
@@ -29,6 +30,7 @@ function SignupUserForm({ setUser }) {
       body: JSON.stringify({
         username,
         email,
+        phone_number: phoneNumber,
         password,
         is_driver: isDriver,
         image, // Add profile picture field if desired
@@ -71,7 +73,7 @@ function SignupUserForm({ setUser }) {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+              className="block font-semibold mb-2 dark:text-white"
             >
               Username
             </label>
@@ -81,14 +83,14 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+              className="block text-gray-700 dark:text-gray-200 font-semibold mb-2"
             >
               Email
             </label>
@@ -98,7 +100,24 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="phone_number"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+            >
+              Phone number
+            </label>
+            <input
+              type="text"
+              id="phone_number"
+              autoComplete="off"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -115,7 +134,7 @@ function SignupUserForm({ setUser }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -132,7 +151,7 @@ function SignupUserForm({ setUser }) {
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -151,7 +170,7 @@ function SignupUserForm({ setUser }) {
                   setIsDriver(e.target.value === "true");
                   // setIsDriverSelected(true); // This will hide the dropdown after selection
                 }}
-                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
               >
                 <option value="false">No</option>
                 <option value="true">Yes</option>

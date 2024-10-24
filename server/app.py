@@ -3,6 +3,7 @@ from flask import request, session, jsonify, make_response
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api, bcrypt
+from datetime import datetime
 
 from models import User, Booking, Ride, Payment, Review, Vehicle, Admin
 
@@ -286,11 +287,16 @@ class RideResource(Resource):
 
     def post(self):
         data = request.get_json()
+        
+        # Convert string times to Python datetime objects
+        pickup_time = datetime.strptime(data['pickup_time'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        dropoff_time = datetime.strptime(data['dropoff_time'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        
         ride = Ride(
             pickup_location=data['pickup_location'],
             dropoff_location=data['dropoff_location'],
-            pickup_time=data['pickup_time'],
-            dropoff_time=data['dropoff_time'],
+            pickup_time=pickup_time,
+            dropoff_time=dropoff_time,
             distance=data['distance'],
             estimated_cost=data['estimated_cost'],
             ride_status=data.get('ride_status', 'pending'),
@@ -299,8 +305,7 @@ class RideResource(Resource):
         )
         db.session.add(ride)
         db.session.commit()
-        return jsonify(ride.to_dict()), 201
-
+        return make_response(jsonify(ride.to_dict()), 201)
 
 class RideResourceById(Resource):
     def get(self, ride_id=None):

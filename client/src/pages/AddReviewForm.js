@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 function AddReviewForm({ user, onNewReview }) {
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(3); // Default rating to a valid number
+  const [rating, setRating] = useState(''); // Default rating to a valid number
   const { id } = useParams(); // Get the 'id' from the URL parameters
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -78,24 +78,24 @@ function AddReviewForm({ user, onNewReview }) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4 dark:bg-gray-800">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-6 text-center border-t-4 border-green-500 w-full max-w-md sm:max-w-lg"
+        className="bg-white shadow-lg rounded-lg p-6 text-center border-t-4 border-gray-600 w-full max-w-md sm:max-w-lg dark:bg-gray-700"
       >
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 dark:text-white">
           Leave a Review
         </h2>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {successMessage && (
-          <p className="text-green-500 mb-4">{successMessage}</p>
+          <p className="text-gray-500 mb-4">{successMessage}</p>
         )}
 
         <div className="mb-4">
           <label
             htmlFor="comment"
-            className="block text-left text-gray-700 text-sm font-bold mb-2"
+            className="block text-left text-gray-700 text-sm font-bold mb-2 dark:text-white"
           >
             Your Review:
           </label>
@@ -113,7 +113,7 @@ function AddReviewForm({ user, onNewReview }) {
         <div className="mb-4">
           <label
             htmlFor="rating"
-            className="block text-left text-gray-700 text-sm font-bold mb-2"
+            className="block text-left text-gray-700 text-sm font-bold mb-2 dark:text-white"
           >
             Your Rating:
           </label>
@@ -123,7 +123,7 @@ function AddReviewForm({ user, onNewReview }) {
             type="number"
             value={rating}
             onChange={(e) => setRating(Number(e.target.value))}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             min="1"
             max="5"
             placeholder="Enter a rating (1-5)"
@@ -133,7 +133,7 @@ function AddReviewForm({ user, onNewReview }) {
 
         <button
           type="submit"
-          className="w-full bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-200"
+          className="w-full bg-gray-500 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-600 transition duration-200"
         >
           Submit Review
         </button>

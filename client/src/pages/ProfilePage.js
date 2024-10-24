@@ -7,7 +7,7 @@ function ProfilePage({ user }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center dark:bg-gray-800">
       <UserProfile userId={user.id} /> {/* Dynamically pass the userId */}
     </div>
   );

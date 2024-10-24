@@ -18,7 +18,7 @@ function StarRating({ rating }) {
   );
 }
 
-function VehicleDetails({ onAddToBookedVehicles }) {
+function VehicleDetails({ onAddToBookedRides }) {
   const [vehicle, setVehicle] = useState(null);
   const [showDriverDetails, setShowDriverDetails] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
@@ -28,55 +28,31 @@ function VehicleDetails({ onAddToBookedVehicles }) {
 
   // Fetch vehicle data
   useEffect(() => {
-    // Fetch vehicle data
     fetch(`/vehicles/${id}`).then((r) => {
       if (r.ok) {
         r.json().then((vehicleData) => {
-          setVehicle(vehicleData); // Set vehicle data correctly
-          if (vehicleData.user && vehicleData.user.is_driver === true) {
-            // Fetch reviews for the driver (user) if available
+          setVehicle(vehicleData);
+
+          // Fetch driver reviews and pending rides if the vehicle has a driver
+          if (vehicleData.user && vehicleData.user.is_driver) {
             fetch(`/rides/${vehicleData.user.id}/reviews`).then((res) => {
               if (res.ok) {
-                res.json().then((reviewData) => {
-                  console.log(reviewData);
-                  // Set review data and include user info
-                  setReviews(reviewData);
-                });
+                res.json().then((reviewData) => setReviews(reviewData));
               }
             });
 
-            // Fetch pending rides for the driver
-            fetch(`/rides?driver_id=${vehicleData.user.id}&ride_status=pending`) // Updated fetch
-              .then((res) => {
-                if (res.ok) {
-                  res.json().then((rideData) => {
-                    console.log(rideData);
-                    setPendingRides(rideData); // Set pending rides for the driver
-                  });
-                } else {
-                  console.error(
-                    "Failed to fetch pending rides:",
-                    res.statusText
-                  );
-                }
-              })
-              .catch((error) => {
-                console.error("Error fetching pending rides:", error);
-              });
+            fetch(
+              `/rides?driver_id=${vehicleData.user.id}&ride_status=pending`
+            ).then((res) => {
+              if (res.ok) {
+                res.json().then((rideData) => setPendingRides(rideData));
+              }
+            });
           }
         });
       }
     });
   }, [id]);
-
-  const handleNewReview = (newReview) => {
-    setReviews((prevReviews) => [newReview, ...prevReviews]);
-  };
-  
-
-  if (!vehicle) {
-    return <div>Loading vehicle details...</div>;
-  }
 
   const toggleDriverDetails = () => {
     setShowDriverDetails((prev) => !prev);
@@ -86,18 +62,21 @@ function VehicleDetails({ onAddToBookedVehicles }) {
     setShowReviews((prev) => !prev);
   };
 
-  const handleClick = () => {
-    if (vehicle) {
-      onAddToBookedVehicles(vehicle);
-    } else {
-      console.error("Vehicle is not selected or available");
-    }
+  const handleBookRide = (ride) => {
+    // Call the callback to add this ride to the booked rides
+    onAddToBookedRides(ride);
+    // console.log(ride);
   };
 
+  if (!vehicle) {
+    return <div>Loading vehicle details...</div>;
+  }
+
   return (
-    <div className="flex flex-col max-w-4xl rounded-lg shadow-lg bg-white mx-auto border border-gray-200 p-4 sm:p-6 md:p-8 mt-16 h-auto">
+    <div className="h-auto pt-10 pb-20">
+      <div className="flex flex-col max-w-4xl rounded-lg shadow-lg bg-white mx-auto border border-gray-200 dark:border-gray-700 p-4 sm:p-6 md:p-8 mt-20 dark:bg-gray-700">
       <div className="mt-10">
-        <h2 className="font-bold text-4xl mb-4">
+        <h2 className="font-bold text-4xl mb-4 dark:text-white">
           {vehicle.make} {vehicle.model}
         </h2>
         <div className="flex justify-center mb-4 md:mb-0">
@@ -108,13 +87,13 @@ function VehicleDetails({ onAddToBookedVehicles }) {
           />
         </div>
         <div className="w-full flex flex-col justify-center pl-8">
-          <p className="text-lg mb-2">
+          <p className="text-lg mb-2 dark:text-white">
             <strong>Color:</strong> {vehicle.color}
           </p>
-          <p className="text-lg mb-2">
+          <p className="text-lg mb-2 dark:text-white">
             <strong>Plate Number:</strong> {vehicle.plate_number}
           </p>
-          <p className="text-lg mb-2">
+          <p className="text-lg mb-2 dark:text-white">
             <strong>Seating Capacity:</strong> {vehicle.seating_capacity} seats
           </p>
 
@@ -127,16 +106,16 @@ function VehicleDetails({ onAddToBookedVehicles }) {
 
           {showDriverDetails && vehicle.user && (
             <div className="mt-4 rounded w-full">
-              <h3 className="font-bold text-2xl underline mb-2">
+              <h3 className="font-bold text-2xl underline mb-2 dark:text-white">
                 Driver Details:
               </h3>
-              <p className="text-lg mb-2">
+              <p className="text-lg mb-2 dark:text-white">
                 <strong>Name:</strong> {vehicle.user.username}
               </p>
-              <p className="text-lg mb-2">
+              <p className="text-lg mb-2 dark:text-white">
                 <strong>Email:</strong> {vehicle.user.email}
               </p>
-              <p className="text-lg mb-2">
+              <p className="text-lg mb-2 dark:text-white">
                 <strong>Phone Number:</strong> {vehicle.user.phone_number}
               </p>
 
@@ -152,15 +131,13 @@ function VehicleDetails({ onAddToBookedVehicles }) {
                   <h4 className="font-bold text-xl">Reviews:</h4>
                   {reviews.map((review) => (
                     <div key={review.id} className="mt-2">
-                      <p>
-                        <div>
-                          <FontAwesomeIcon icon={faUser} className="mr-2" />
-                          {review.user.username} <br />
-                        </div>
-                        <strong>Rating:</strong>
-                        <StarRating rating={review.rating} />
-                        <strong>Comment:</strong> {review.comment}
-                      </p>
+                      <div>
+                        <FontAwesomeIcon icon={faUser} className="mr-2" />
+                        {review.user.username}
+                      </div>
+                      <strong>Rating:</strong>
+                      <StarRating rating={review.rating} />
+                      <strong>Comment:</strong> {review.comment}
                     </div>
                   ))}
                 </div>
@@ -181,27 +158,25 @@ function VehicleDetails({ onAddToBookedVehicles }) {
                       <p>
                         <strong>Estimated Cost:</strong> ${ride.estimated_cost}
                       </p>
-
-                      <button className="w-1/4 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4">
-                        Book Now
-                      </button>
+                      <Link to="/rides/your-rides">
+                        <button
+                          className="w-1/4 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4"
+                          onClick={() => handleBookRide(ride)}
+                        >
+                          Book Now
+                        </button>
+                      </Link>
                     </div>
                   ))}
                 </div>
               )}
-
-              <hr className="my-2" />
             </div>
           )}
-
-          <Link to={`/rides/${id}/reviews`} className="mt-4">
-            <div className="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4 text-center">
-              Ridden with driver before? Leave a review
-            </div>
-          </Link>
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }
 

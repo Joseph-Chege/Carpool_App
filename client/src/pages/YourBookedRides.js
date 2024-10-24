@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import BookedRide from "./BookedRide";
+import BookedRide from "../pages/BookedRide";
 import PriceCounter from "../components/PriceCounter";
 
-function YourBookedRides({ booked }) {
+function YourBookedRides({ booked, onRemoveRide }) {
   return (
     <div className="min-h-screen bg-gray-100 mt-16 dark:bg-gray-800">
       {booked.length === 0 ? (
@@ -21,19 +21,16 @@ function YourBookedRides({ booked }) {
         </Link>
       ) : (
         <div className="p-4 sm:p-6 md:p-8 mt-16">
-          <h1 className="text-xl sm:text-2xl md:text-3xl text-gray-800 font-bold mb-2 text-center">
-            Your Booked Vehicles
+          <h1 className="text-xl sm:text-2xl md:text-3xl text-gray-800 font-bold mb-2 text-center dark:text-white">
+            Your Booked Rides
           </h1>
           <div className="mb-2">
             <PriceCounter booked={booked} />
           </div>
-          <div className="bg-gray-300 p-4 sm:p-6 md:p-8 rounded-lg">
+          <div className="bg-gray-300 p-4 sm:p-6 md:p-8 rounded-lg dark:bg-gray-700">
             <ul className="flex flex-wrap justify-center gap-4">
-              {booked.map((vehicle) => (
-                <BookedRide
-                  key={vehicle.id}
-                  booked_vehicle={vehicle}
-                />
+              {booked.map((ride) => (
+                <BookedRide key={ride.id} booked_ride={ride} onRemoveRide={onRemoveRide} />
               ))}
             </ul>
           </div>
