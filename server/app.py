@@ -50,7 +50,8 @@ class Signup(Resource):
                 email=data['email'],
                 phone_number=data.get('phone_number'),
                 password_hash=bcrypt.generate_password_hash(data['password']).decode('utf-8'),
-                is_driver=data.get('is_driver', False)
+                is_driver=data.get('is_driver', False),
+                image=data.get('image')
             )
             db.session.add(user)
             db.session.commit()

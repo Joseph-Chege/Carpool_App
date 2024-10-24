@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function NewRideForm({ user }) {
-//   const { id } = useParams(); // Get vehicleId from the URL
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [pickupTime, setPickupTime] = useState("");

@@ -61,7 +61,7 @@ function SignupUserForm({ setUser }) {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-8 lg:px-16 dark:bg-gray-800">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-8 lg:px-16 dark:bg-gray-800 mt-14">
       <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-xs sm:max-w-sm lg:max-w-md dark:bg-gray-700">
         <form onSubmit={handleSubmit}>
           <h1 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-6 dark:text-white">
@@ -69,6 +69,22 @@ function SignupUserForm({ setUser }) {
           </h1>
 
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+          <div className="mb-4">
+            <label
+              htmlFor="image"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+            >
+              Photo
+            </label>
+            <input
+              type="text"
+              id="image"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+            />
+          </div>
 
           <div className="mb-4">
             <label
@@ -168,7 +184,7 @@ function SignupUserForm({ setUser }) {
                 value={isDriver}
                 onChange={(e) => {
                   setIsDriver(e.target.value === "true");
-                  // setIsDriverSelected(true); // This will hide the dropdown after selection
+                  setIsDriverSelected(true); // This will hide the dropdown after selection
                 }}
                 className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
               >

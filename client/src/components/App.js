@@ -19,9 +19,7 @@ import NewRideForm from "../pages/NewRideForm";
 function App() {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-  const [vehicle, setVehicles] = useState([]);
   const [bookedRides, setBookedRides] = useState([]);
-  const [bookedVehicles, setBookedVehicles] = useState([]);
   const [reviews, setReviews] = useState([]);
 
   // Function to toggle dark mode and save the state to localStorage

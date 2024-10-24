@@ -172,7 +172,7 @@ function DriverDashboard({ user }) {
                   key={vehicle.id}
                   className="bg-white p-4 rounded-lg shadow-md w-2/3"
                 >
-                  <img src={vehicle.image} />
+                  <img alt='image' src={vehicle.image} />
                   <h2 className="font-bold text-lg">
                     {vehicle.make} {vehicle.model}
                   </h2>
