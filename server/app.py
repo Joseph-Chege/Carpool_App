@@ -1,5 +1,5 @@
 # !/usr/bin/env python3
-from flask import request, session, jsonify, make_response
+from flask import request, session, jsonify, make_response, render_template
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api, bcrypt
@@ -10,6 +10,10 @@ from models import User, Booking, Ride, Payment, Review, Vehicle, Admin
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({"message": "Welcome to the Carpool API!"}), 200
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 class CheckSession(Resource):
     def get(self):
