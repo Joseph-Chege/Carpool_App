@@ -159,7 +159,7 @@ function DriverDashboard({ user }) {
         </aside>
         {/* Main Content */}
         <main className="flex-1 p-4 bg-gray-100 dark:bg-gray-900 h-auto pt-20">
-          <h1 className="text-2xl font-bold mb-4">Registered Vehicles</h1>
+          <h1 className="text-2xl font-bold mb-4 dark:text-white">Registered Vehicles</h1>
 
           {/* Display error message */}
           {error && <p className="text-red-500">{error}</p>}
@@ -170,8 +170,9 @@ function DriverDashboard({ user }) {
               {vehicles.map((vehicle) => (
                 <div
                   key={vehicle.id}
-                  className="bg-white p-4 rounded-lg shadow-md"
+                  className="bg-white p-4 rounded-lg shadow-md w-2/3"
                 >
+                  <img alt='vehicle' src={vehicle.image} />
                   <h2 className="font-bold text-lg">
                     {vehicle.make} {vehicle.model}
                   </h2>
@@ -191,6 +192,14 @@ function DriverDashboard({ user }) {
                   <p>
                     <strong>Sacco:</strong> {vehicle.sacco}
                   </p>
+                  <Link to="/create-ride">
+                        <button
+                          className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4"
+                          // onClick={() => handleBookRide(ride)}
+                        >
+                          Create ride for vehicle
+                        </button>
+                      </Link>
                 </div>
               ))}
             </div>

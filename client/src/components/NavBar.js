@@ -76,6 +76,7 @@ function NavBar({ user, setUser, toggleDarkMode, darkMode }) {
         </div>
       </Link>
 
+      <Link to="/Profile">
       <div className="mr-2">
         {user && ( // Simplified conditional rendering
           <span className="text-2xl text-black hover:text-light-pink dark:text-white">
@@ -83,11 +84,14 @@ function NavBar({ user, setUser, toggleDarkMode, darkMode }) {
           </span>
         )}
       </div>
-
+      </Link>
+      <Link to="/Profile">
       <div className="font-semibold text-lg text-black dark:text-white">
         {user ? user.username : null}
       </div>
-
+      </Link>
+      
+      
       <div>
         {user && ( // Simplified conditional rendering
           <button

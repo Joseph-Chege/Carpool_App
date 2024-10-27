@@ -7,14 +7,9 @@
     font-family: "Poppins", sans-serif;
   }
 }
-
 @layer utilities {
   .bg-custom-image-0 {
     @apply w-full;
-<<<<<<< HEAD
     /* background-image: url('/root/sdpt-06/labs/phase-05/Carpool_App/client/src/images/pexels-peterfazekas-1386649.jpg'); */
-=======
-    background-image: url("https://thumbs.dreamstime.com/b/nairobi-street-kenyatta-avenue-kenya-roads-s-capital-parked-vehciles-africa-245976349.jpg?w=992");
->>>>>>> upstream/main
   }
 }

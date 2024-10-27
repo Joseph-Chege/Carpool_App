@@ -100,7 +100,7 @@ class Booking(db.Model, SerializerMixin):
 class Ride(db.Model, SerializerMixin):
     __tablename__ = 'rides'
 
-    serialize_rules= ('-user', '-ride')
+    # serialize_rules= ('-user', '-ride')
 
     id = db.Column(db.Integer, primary_key=True)
     pickup_location = db.Column(db.String(255))
@@ -118,7 +118,7 @@ class Ride(db.Model, SerializerMixin):
     bookings = db.relationship('Booking', back_populates='ride', cascade='all, delete-orphan')
     users = association_proxy('bookings', 'user')
     reviews = db.relationship('Review', back_populates='ride', cascade='all, delete-orphan')
-
+    
 
     @validates('ride_status')
     def validate_ride_status(self, key, ride_status):
@@ -172,6 +172,7 @@ class Vehicle(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', back_populates='vehicles')
+  
 
     def __repr__(self):
         return f'<Vehicle {self.id}, {self.plate_number}>'

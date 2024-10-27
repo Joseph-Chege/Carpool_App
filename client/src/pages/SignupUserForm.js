@@ -5,11 +5,12 @@ function SignupUserForm({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isDriver, setIsDriver] = useState(false); // State to check if user is a driver or not
   const [isDriverSelected, setIsDriverSelected] = useState(false); // State to check if user is a driver or not
   const [error, setError] = useState(""); // State for error messages
-  const [image, setImage] = useState(""); 
+  const [image, setImage] = useState("");
 
   const navigate = useNavigate();
 
@@ -29,9 +30,10 @@ function SignupUserForm({ setUser }) {
       body: JSON.stringify({
         username,
         email,
+        phone_number: phoneNumber,
         password,
         is_driver: isDriver,
-        image // Add profile picture field if desired
+        image, // Add profile picture field if desired
       }),
     })
       .then((response) => {
@@ -59,7 +61,7 @@ function SignupUserForm({ setUser }) {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-8 lg:px-16 dark:bg-gray-800">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-8 lg:px-16 dark:bg-gray-800 mt-14">
       <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-xs sm:max-w-sm lg:max-w-md dark:bg-gray-700">
         <form onSubmit={handleSubmit}>
           <h1 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-6 dark:text-white">
@@ -70,8 +72,24 @@ function SignupUserForm({ setUser }) {
 
           <div className="mb-4">
             <label
-              htmlFor="username"
+              htmlFor="image"
               className="block text-gray-700 font-semibold mb-2 dark:text-white"
+            >
+              Photo
+            </label>
+            <input
+              type="text"
+              id="image"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block font-semibold mb-2 dark:text-white"
             >
               Username
             </label>
@@ -81,14 +99,14 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+              className="block text-gray-700 dark:text-gray-200 font-semibold mb-2"
             >
               Email
             </label>
@@ -98,7 +116,24 @@ function SignupUserForm({ setUser }) {
               autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="phone_number"
+              className="block text-gray-700 font-semibold mb-2 dark:text-white"
+            >
+              Phone number
+            </label>
+            <input
+              type="text"
+              id="phone_number"
+              autoComplete="off"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -115,7 +150,7 @@ function SignupUserForm({ setUser }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -132,7 +167,7 @@ function SignupUserForm({ setUser }) {
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
               autoComplete="new-password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 
@@ -149,9 +184,9 @@ function SignupUserForm({ setUser }) {
                 value={isDriver}
                 onChange={(e) => {
                   setIsDriver(e.target.value === "true");
-                  // setIsDriverSelected(true); // This will hide the dropdown after selection
+                  setIsDriverSelected(true); // This will hide the dropdown after selection
                 }}
-                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+                className="w-32 px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
               >
                 <option value="false">No</option>
                 <option value="true">Yes</option>
@@ -165,7 +200,7 @@ function SignupUserForm({ setUser }) {
           >
             Sign Up
           </button>
-         
+
           <p className="mt-4 text-center dark:text-white">
             Already have an account? &nbsp;
             <Link to="/login">

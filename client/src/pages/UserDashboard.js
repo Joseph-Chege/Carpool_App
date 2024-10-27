@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import VehicleCard from "../components/VehicleCard";
 import RideCard from "../components/RideCard";
 
-function UserDashboard({ user }) {
+function UserDashboard({ user, onAddToBookedRides }) {
   const [vehicles, setVehicles] = useState([]); // State to hold vehicles
   const [rides, setRides] = useState([]); // State to hold rides
   const [error, setError] = useState(""); // State for error messages
-  const [expandedGroup, setExpandedGroup] = useState(null); // State to track the expanded vehicle group
+  const [expandedGroup, setExpandedGroup] = useState(null); // Initially null, will set to 4 after fetching
   const [expandedRideGroup, setExpandedRideGroup] = useState(null); // State to track the expanded ride group
   const userId = user.id; // This should be set to the current user's ID
 
@@ -21,7 +21,15 @@ function UserDashboard({ user }) {
           throw new Error("Failed to fetch vehicles");
         }
       })
-      .then((data) => setVehicles(data))
+      .then((data) => {
+        setVehicles(data);
+        
+        // After fetching vehicles, expand seating capacity 4 by default if available
+        const hasSeatingCapacity4 = data.some(vehicle => vehicle.seating_capacity === 4);
+        if (hasSeatingCapacity4) {
+          setExpandedGroup(4);
+        }
+      })
       .catch((error) => setError(error.message));
   }, [userId]);
 
@@ -75,13 +83,23 @@ function UserDashboard({ user }) {
     setExpandedRideGroup((prev) => (prev === location ? null : location));
   };
 
+  // Function to handle ride booking and remove it from displayed rides
+  const handleBookRide = (ride) => {
+    // Call the parent callback to add the ride to booked rides
+    onAddToBookedRides(ride);
+    console.log(ride)
+
+    // Remove the booked ride from the displayed rides
+    setRides((prevRides) => prevRides.filter((r) => r.id !== ride.id));
+  };
+
   return (
     <div className="flex-col dark:bg-gray-900 min-h-screen">
       <div className='flex flex-1 h-auto'>
         <aside className="w-64 bg-gray-800 text-white p-4 flex-col min-h-screen pt-20">
           <h2 className="text-xl font-bold">User Dashboard</h2>
           <ul className="mt-4">
-          <li>
+            <li>
               <Link to="/Profile" className="block py-2 hover:bg-gray-700">
                 Profile
               </Link>
@@ -92,7 +110,7 @@ function UserDashboard({ user }) {
               </Link>
             </li>
             <li>
-              <Link to="/bookings" className="block py-2 hover:bg-gray-700">
+              <Link to="/rides/your-rides" className="block py-2 hover:bg-gray-700">
                 My Bookings
               </Link>
             </li>
@@ -148,7 +166,11 @@ function UserDashboard({ user }) {
                   {expandedRideGroup === location && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {rides.map((ride) => (
-                        <RideCard key={ride.id} ride={ride} />
+                        <RideCard
+                          key={ride.id}
+                          ride={ride}
+                          onAddToBookedRides={handleBookRide} // Pass the modified booking function
+                        />
                       ))}
                     </div>
                   )}

@@ -6,6 +6,7 @@ import Rides from "./Rides";
 import SignupUserForm from "../pages/SignupUserForm";
 import Login from "../pages/Login";
 import HomePageNotLoggedIn from "../pages/HomePageNotLoggedIn";
+import ProfilePage from "../pages/ProfilePage";
 import Footer from "./Footer";
 import VehicleRegistrationForm from "../pages/VehicleRegistrationForm";
 import UserDashboard from "../pages/UserDashboard";
@@ -13,19 +14,32 @@ import VehicleDetails from "./VehicleDetails";
 import AdminDashboard from "../pages/AdminDashboard";
 import YourBookedRides from "../pages/YourBookedRides";
 import AddReviewForm from "../pages/AddReviewForm";
+import NewRideForm from "../pages/NewRideForm";
 
 function App() {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-  const [vehicle, setVehicles] = useState([]);
-  const [bookedVehicles, setBookedVehicles] = useState([]);
+  const [bookedRides, setBookedRides] = useState([]);
   const [reviews, setReviews] = useState([]);
 
+  // Function to toggle dark mode and save the state to localStorage
   const toggleDarkMode = () => {
-    setDarkMode((prevMode) => !prevMode); // Simply toggle the dark mode state
+    setDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", JSON.stringify(newMode)); // Save the mode to localStorage
+      console.log(newMode);
+      return newMode;
+    });
   };
 
+  // Use useEffect to load dark mode preference from localStorage on mount
   useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (savedDarkMode !== null) {
+      setDarkMode(savedDarkMode); // Set dark mode based on saved preference
+    }
+    
+    // Check session for user login status
     fetch("/check_session").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
@@ -33,18 +47,18 @@ function App() {
     });
   }, []);
 
-  const onAddToBookedVehicles = (vehicle) => {
-    if (!bookedVehicles.some((v) => v.id === vehicle.id)) {
-      setBookedVehicles([...bookedVehicles, vehicle]);
-    } else {
-      console.log("Vehicle is already booked.");
-    }
+  const addBookedRide = (ride) => {
+    setBookedRides((prevRides) => [...prevRides, ride]);
+    console.log(bookedRides);
+  };
+
+  const handleRemoveRide = (ride) => {
+    setBookedRides(bookedRides.filter((r) => r.id !== ride.id));
   };
 
   const handleNewReview = (newReview) => {
     setReviews((prevReviews) => [newReview, ...prevReviews]);
   };
-
 
   return (
     <div className={darkMode ? "dark" : "flex-col"}>
@@ -76,29 +90,43 @@ function App() {
                     element={<VehicleRegistrationForm />}
                   />
                   <Route path="/rides" element={<Rides />} />
+                  <Route path="/create-ride" element={<NewRideForm user={user}/>} />
                 </>
               )}
               <Route
                 path="/userdashboard"
-                element={<UserDashboard user={user} />}
+                element={<UserDashboard user={user} onAddToBookedRides={addBookedRide} />}
               />
               <Route
                 path="/userdashboard/vehicles/:id"
                 element={
                   <VehicleDetails
                     user={user}
-                    onAddToBookedVehicles={onAddToBookedVehicles}
+                    onAddToBookedRides={addBookedRide}
                   />
                 }
               />
               <Route
                 path="/rides/your-rides"
-                element={<YourBookedRides booked={bookedVehicles} />}
+                element={
+                  <YourBookedRides
+                    booked={bookedRides}
+                    onRemoveRide={handleRemoveRide}
+                  />
+                }
               />
               <Route
                 path="/rides/:id/reviews"
-                element={<AddReviewForm user={user} reviews={reviews} onNewReview={handleNewReview} />}
+                element={
+                  <AddReviewForm
+                    user={user}
+                    reviews={reviews}
+                    onNewReview={handleNewReview}
+                  />
+                }
               />
+              {/* Profile Page Route - Display user profile */}
+              <Route path="/profile" element={<ProfilePage user={user} />} />
             </>
           ) : (
             <>
