@@ -22,7 +22,9 @@ Flask-Migrate==4.0.7
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.1.1
 greenlet==3.0.3
-gunicorn==19.7.1
+gunicorn==23.0.0
+idna-ssl==2.0.0
+importlib-metadata==6.0.0
 honcho==1.1.0
 ibapi==9.81.1.post1
 idna==3.7
@@ -51,7 +53,6 @@ pygame==2.6.0
 Pygments==2.18.0
 pytest==8.3.2
 python-dateutil==2.9.0.post0
-python-dotenv==1.0.1
 pytz==2024.1
 requests==2.32.3
 six==1.16.0
