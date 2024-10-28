@@ -18,7 +18,7 @@ class User(db.Model, SerializerMixin):
     phone_number = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=func.now())
     is_driver = db.Column(db.Boolean, default=False)
-    image = db.Column(db.String(50))
+    image = db.Column(db.String(255))
     
 
     # relationships
@@ -167,7 +167,7 @@ class Vehicle(db.Model, SerializerMixin):
     plate_number = db.Column(db.String(20))
     seating_capacity = db.Column(db.Integer)
     sacco = db.Column(db.String(50))
-    image = db.Column(db.String(50))
+    image = db.Column(db.String(255))
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 

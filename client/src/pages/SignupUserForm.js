@@ -82,7 +82,7 @@ function SignupUserForm({ setUser }) {
               id="image"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-600 dark:bg-gray-600 dark:text-white"
             />
           </div>
 

@@ -19,12 +19,12 @@ function UserProfile({ userId }) {
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="sm:flex sm:items-center px-6 py-4">
-        <div className="w-full sm:w-1/3">
+        <div className="w-full sm:w-1/3 pr-4">
           {/* Display profile picture or default avatar */}
           {user.image ? (
             <img
               className="rounded-full mx-auto"
-              src={`/static/uploads/${user.image}`}
+              src={user.image}
               alt="Profile"
               style={{ width: "150px", height: "150px" }}
             />
