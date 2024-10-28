@@ -24,7 +24,8 @@ def seed_data():
             admins = []
             admin = Admin(
                 username = 'admin',
-                password_hash = "AdminPassword1234!"
+                password_hash = "AdminPassword1234!",
+                phone_number = 1234567890
             )
             db.session.add(admin)
             admins.append(admin)
