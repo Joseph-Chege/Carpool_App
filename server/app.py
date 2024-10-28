@@ -7,9 +7,9 @@ from datetime import datetime
 
 from models import User, Booking, Ride, Payment, Review, Vehicle, Admin
 
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({"message": "Welcome to the Carpool API!"}), 200
+# @app.route('/', methods=['GET'])
+# def home():
+#     return jsonify({"message": "Welcome to the Carpool API!"}), 200
 
 @app.errorhandler(404)
 def not_found(e):
